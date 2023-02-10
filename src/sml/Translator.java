@@ -1,6 +1,7 @@
 package sml;
 
-import sml.instruction.*;
+import sml.instruction.AddInstruction;
+import sml.instruction.MovInstruction;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,6 +75,11 @@ public final class Translator {
             }
 
             // TODO: add code for all other types of instructions
+            case MovInstruction.OP_CODE -> {
+                String r = scan();
+                int i = Integer.parseInt(scan());
+                return new MovInstruction(label, Register.valueOf(r), i);
+            }
 
             // TODO: Then, replace the switch by using the Reflection API
 
