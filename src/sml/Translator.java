@@ -1,9 +1,6 @@
 package sml;
 
-import sml.instruction.AddInstruction;
-import sml.instruction.MovInstruction;
-import sml.instruction.MulInstruction;
-import sml.instruction.SubInstruction;
+import sml.instruction.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -93,6 +90,12 @@ public final class Translator {
                 String r = scan();
                 String s = scan();
                 return new MulInstruction(label, Register.valueOf(r), Register.valueOf(s));
+            }
+
+            case DivInstruction.OP_CODE -> {
+                String r = scan();
+                String s = scan();
+                return new DivInstruction(label, Register.valueOf(r), Register.valueOf(s));
             }
 
             // TODO: Then, replace the switch by using the Reflection API
