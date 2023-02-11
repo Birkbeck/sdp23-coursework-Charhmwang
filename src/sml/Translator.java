@@ -98,6 +98,17 @@ public final class Translator {
                 return new DivInstruction(label, Register.valueOf(r), Register.valueOf(s));
             }
 
+            case OutInstruction.OP_CODE -> {
+                String r = scan();
+                return new OutInstruction(label, Register.valueOf(r));
+            }
+
+            case JnzInstruction.OP_CODE -> {
+                String r = scan();
+                String L = scan();
+                return new JnzInstruction(label, Register.valueOf(r), L);
+            }
+
             // TODO: Then, replace the switch by using the Reflection API
 
             // TODO: Next, use dependency injection to allow this machine class

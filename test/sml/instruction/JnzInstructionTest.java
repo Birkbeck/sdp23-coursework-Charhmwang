@@ -7,27 +7,24 @@ import org.junit.jupiter.api.Test;
 import sml.Instruction;
 import sml.Machine;
 import sml.Registers;
+import sml.Translator;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
-import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static sml.Registers.Register.EAX;
+import static sml.Registers.Register.*;
 
-public class OutInstructionTest {
-    public static final String OP_CODE = "out";
+public class JnzInstructionTest {
+
     private Machine machine;
     private Registers registers;
-    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final PrintStream out = System.out;
-
 
     @BeforeEach
     void setUp() {
         machine = new Machine(new Registers());
         registers = machine.getRegisters();
-        System.setOut(new PrintStream(outputStream));
         //...
     }
 
@@ -35,17 +32,15 @@ public class OutInstructionTest {
     void tearDown() {
         machine = null;
         registers = null;
-        System.setOut(out);
     }
 
     @Test
-    void executeValid() {
-        registers.set(EAX, 5);
-        Instruction instruction = new OutInstruction(null, EAX);
-        instruction.execute(machine);
-        String actual = outputStream.toString();
-
-        assertEquals("Contents of register EAX: 5\n", actual);
+    void executeValid() throws IOException {
+        Translator t = new Translator("/Users/haomengwang/Desktop/instructions.txt");
+        t.readAndTranslate(machine.getLabels(), machine.getProgram());
+        machine.execute();
+        int actual_EBX = machine.getRegisters().get(EBX);
+        int expected_EBX = 720;
+        assertEquals(expected_EBX, actual_EBX);
     }
 }
-
