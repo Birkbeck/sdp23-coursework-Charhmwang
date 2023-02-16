@@ -4,6 +4,8 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
+import java.util.Objects;
+
 public class JnzInstruction extends Instruction {
     // jnz s L - If the contents of register s is not zero, then make the statement labelled
     //           L the next statement to execute
@@ -31,4 +33,16 @@ public class JnzInstruction extends Instruction {
     public String toString() {
         return getLabelString() + getOpcode() + " " + s + " " + L;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof JnzInstruction other) {
+            return Objects.equals(this.label, other.label);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() { return Objects.hash(label, s, L, OP_CODE); }
 }

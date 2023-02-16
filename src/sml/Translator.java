@@ -73,7 +73,7 @@ public final class Translator {
                 return new AddInstruction(label, Register.valueOf(r), Register.valueOf(s));
             }
 
-            // TODO: add code for all other types of instructions
+            // [Done] TODO: add code for all other types of instructions
             case MovInstruction.OP_CODE -> {
                 String r = scan();
                 int i = Integer.parseInt(scan());

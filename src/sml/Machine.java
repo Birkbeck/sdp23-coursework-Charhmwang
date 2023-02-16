@@ -86,7 +86,5 @@ public final class Machine {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(labels, program, registers, programCounter);
-	}
+	public int hashCode() { return Objects.hash(labels, program, registers, programCounter); }
 }

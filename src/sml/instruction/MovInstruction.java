@@ -4,6 +4,8 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
+import java.util.Objects;
+
 public class MovInstruction extends Instruction {
     private final RegisterName result;
     private final int val;
@@ -25,4 +27,16 @@ public class MovInstruction extends Instruction {
     public String toString() {
         return getLabelString() + getOpcode() + " " + result + " " + val;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof MovInstruction other) {
+            return Objects.equals(this.label, other.label);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() { return Objects.hash(label, result, val, OP_CODE); }
 }

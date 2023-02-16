@@ -22,7 +22,9 @@ public final class Labels {
 	public void addLabel(String label, int address) {
 		Objects.requireNonNull(label);
 		// TODO: Add a check that there are no label duplicates.
-		labels.put(label, address);
+		if (labels.get(label) == null )
+			labels.put(label, address);
+		else;// Give a compile-time syntax error and stop the program.
 	}
 
 	/**
@@ -35,6 +37,7 @@ public final class Labels {
 		// TODO: Where can NullPointerException be thrown here?
 		//       (Write an explanation.)
 		//       Add code to deal with non-existent labels.
+
 		return labels.get(label);
 	}
 

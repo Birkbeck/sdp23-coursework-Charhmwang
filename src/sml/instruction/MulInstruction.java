@@ -4,6 +4,8 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
+import java.util.Objects;
+
 public class MulInstruction extends Instruction {
 
     private final RegisterName result;
@@ -29,4 +31,16 @@ public class MulInstruction extends Instruction {
     public String toString() {
         return getLabelString() + getOpcode() + " " + result + " " + source;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof MulInstruction other) {
+            return Objects.equals(this.label, other.label);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() { return Objects.hash(label, result, source, OP_CODE); }
 }
