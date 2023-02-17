@@ -1,8 +1,12 @@
 package sml;
 
+import sml.instruction.SubInstruction;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import static java.lang.System.exit;
 
 // TODO: write a JavaDoc for the class
 
@@ -22,9 +26,12 @@ public final class Labels {
 	public void addLabel(String label, int address) {
 		Objects.requireNonNull(label);
 		// TODO: Add a check that there are no label duplicates.
-		if (labels.get(label) == null )
+		// Check if this label is already existed, throw a runtime exception and stop the program
+		if (labels.containsKey(label)) {
+			throw new RuntimeException("Oops, there are labels duplicates!");
+		}
+		else
 			labels.put(label, address);
-		else;// Give a compile-time syntax error and stop the program.
 	}
 
 	/**
@@ -54,7 +61,15 @@ public final class Labels {
 	}
 
 	// TODO: Implement equals and hashCode (needed in class Machine).
-
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Labels other) {
+			return Objects.equals(this.labels, other.labels);
+		}
+		return false;
+	}
+	@Override
+	public int hashCode() { return Objects.hash(labels); }
 	/**
 	 * Removes the labels
 	 */
