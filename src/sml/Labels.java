@@ -19,15 +19,14 @@ public final class Labels {
 	 * @param label the label
 	 * @param address the address the label refers to
 	 */
-	public boolean addLabel(String label, int address) {
+	public void addLabel(String label, int address) {
 		Objects.requireNonNull(label);
 		// [Done]TODO: Add a check that there are no label duplicates.
-		// Check if this label is already existed, return false to Translator
+		// Check if this label is already existed, throw a runtime exception
 		if (labels.containsKey(label))
-			return false;
+			throw new RuntimeException("Oops, there are labels duplicates!");
 		else
 			labels.put(label, address);
-		return true;
 	}
 
 	/**
@@ -37,13 +36,13 @@ public final class Labels {
 	 * @return the address the label refers to
 	 */
 	public int getAddress(String label) {
-		// TODO: Where can NullPointerException be thrown here?
+		// [Done]TODO: Where can NullPointerException be thrown here?
 		//       (Write an explanation.)
 		//       Add code to deal with non-existent labels.
-		if (!labels.containsKey(label)) {
-			throw new NullPointerException("Oops, cannot find the specialized label in a Jnz instruction!");
-		}
-
+		// NullPointerException is thrown when there is a parameter label found
+		// in a jnz instruction, but not found as a key in the labels map.
+		if (!labels.containsKey(label))
+			throw new NullPointerException("Non-exited label!");
 		return labels.get(label);
 	}
 
