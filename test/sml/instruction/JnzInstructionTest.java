@@ -36,7 +36,7 @@ public class JnzInstructionTest {
 
     @Test
     void executeValid() throws IOException {
-        Translator t = new Translator("/Users/haomengwang/Desktop/instructions.txt");
+        Translator t = new Translator("./src/test2.sml");
         t.readAndTranslate(machine.getLabels(), machine.getProgram());
         machine.execute();
         int actual_EBX = machine.getRegisters().get(EBX);
