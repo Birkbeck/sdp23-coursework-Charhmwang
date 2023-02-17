@@ -1,7 +1,6 @@
 package sml.instruction;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sml.Instruction;
@@ -10,8 +9,6 @@ import sml.Registers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
-import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static sml.Registers.Register.EAX;
 

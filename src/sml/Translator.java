@@ -44,8 +44,14 @@ public final class Translator {
 
                 Instruction instruction = getInstruction(label);
                 if (instruction != null) {
-                    if (label != null)
-                        labels.addLabel(label, program.size());
+                    if (label != null) {
+                    // Check if there are no label duplicates
+                    // If there is, should give a error message and exit the program
+                        if ( !labels.addLabel(label, program.size()) ) {
+                            System.out.print("Oops, there are labels duplicates!\nSystem exit\n");
+                            System.exit(0);
+                        }
+                    }
                     program.add(instruction);
                 }
             }
