@@ -3,14 +3,21 @@ package sml;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 // TODO: write a JavaDoc for the class
 
 /**
+ * Represents labels of the whole set of labeled instructions in a program and the corresponding addresses.
  *
- * @author ...
+ * @author Haomeng Wang
  */
 public final class Labels {
+
+	/** The immutable reference of a hashmap storing labels that each one is in form of String,
+	 * and the corresponding address in form of Integer. Compulsory existing.
+	 * Each label which is not null will be set into the map as key with value of integer.
+	 * */
 	private final Map<String, Integer> labels = new HashMap<>();
 
 	/**
@@ -23,10 +30,10 @@ public final class Labels {
 		Objects.requireNonNull(label);
 		// [Done]TODO: Add a check that there are no label duplicates.
 		// Check if this label is already existed, throw a runtime exception
-		if (labels.containsKey(label))
-			throw new RuntimeException("Oops, there are labels duplicates!");
-		else
-			labels.put(label, address);
+			if (labels.containsKey(label))
+				throw new RuntimeException("Oops, there are labels duplicates!");
+			else
+				labels.put(label, address);
 	}
 
 	/**
@@ -54,8 +61,11 @@ public final class Labels {
 	 */
 	@Override
 	public String toString() {
-		// TODO: Implement the method using the Stream API (see also class Registers).
-		return "";
+		// [Done]TODO: Implement the method using the Stream API (see also class Registers).
+		return labels.entrySet().stream()
+				.sorted(Map.Entry.comparingByValue())
+				.map(e -> e.getKey() + " -> " + e.getValue())
+				.collect(Collectors.joining(", ", "[", "]")) ;
 	}
 
 	// TODO: Implement equals and hashCode (needed in class Machine).
