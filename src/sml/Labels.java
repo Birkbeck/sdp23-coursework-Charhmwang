@@ -68,16 +68,17 @@ public final class Labels {
 				.collect(Collectors.joining(", ", "[", "]")) ;
 	}
 
-	// TODO: Implement equals and hashCode (needed in class Machine).
+	// [Done]TODO: Implement equals and hashCode (needed in class Machine).
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Labels other) {
-			return Objects.equals(this.labels, other.labels);
+			return this.labels.toString().equals(other.labels.toString());
 		}
 		return false;
 	}
 	@Override
 	public int hashCode() { return Objects.hash(labels); }
+
 	/**
 	 * Removes the labels
 	 */
