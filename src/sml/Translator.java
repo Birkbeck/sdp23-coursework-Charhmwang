@@ -1,14 +1,14 @@
 package sml;
 
-import sml.instruction.*;
-
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
-
-import static sml.Registers.Register;
 
 /**
  * This class reads a sml file adding each line instruction into the machine's program.
@@ -49,6 +49,8 @@ public final class Translator {
                     program.add(instruction);
                 }
             }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -61,62 +63,69 @@ public final class Translator {
      * The input line should consist of a single SML instruction,
      * with its label already removed.
      */
-    private Instruction getInstruction(String label) {
+    private Instruction getInstruction(String label) throws IOException, ClassNotFoundException {
         if (line.isEmpty())
             return null;
+        String opcode = scan(); // get "add" or "sub", "mov" ...
+        //e.g., to match "AddInstruction" class form in beans.properties
+        String insClassName = opcode.substring(0, 1).toUpperCase()
+                + opcode.substring(1) + "Instruction";
 
-        String opcode = scan();
-        switch (opcode) {
-            case AddInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new AddInstruction(label, Register.valueOf(r), Register.valueOf(s));
+        Instruction ins = builder(label, insClassName);
+        if (ins == null)
+            System.out.println("Unknown instruction: " + opcode);
+
+        return ins;
+    }
+
+
+    // [Done] TODO: Then, replace the switch by using the Reflection API
+    // TODO: Next, use dependency injection to allow this machine class to work with different sets of opcodes (different CPUs)
+    /**
+     * Creates an instance of the Instruction subclass described in param className.
+     * This class should exist in the beans.properties file.
+     * Each subclass of Instruction has only one constructor, with the first argument is always a label string.
+     * The rest parameters of constructor assigned from the scanned contents and based on the parameter's type.
+     *
+     * @param label optional label (can be null)
+     * @param insClassName instruction subclass name
+     * @return instantiated Instruction object of class type insClassName or null if construction is
+     * not possible.
+     * @throws IOException FileReader cannot find or read the given file
+     * @throws ClassNotFoundException insClassName does not refer to a known Class
+     */
+    private Instruction builder(String label, String insClassName) throws IOException, ClassNotFoundException {
+
+        // Get all the subclasses and classpath from a properties file in directory resources
+        Properties props = new Properties();
+        props.load( new FileReader("../resources/beans.properties") );
+        String classPath = props.getProperty(insClassName);
+        Class<?> cls = Class.forName(classPath);
+        // Each Instruction subclass is designed having only one constructor
+        Constructor<?> constructor = cls.getConstructors()[0];
+        int paramsNum = constructor.getParameterCount();
+
+        try {
+            Object[] paramObjects = new Object[paramsNum];
+            // get the constructor parameters
+            // a collection of params class - of the constructor
+            Class<?>[] consParamTypes = constructor.getParameterTypes();
+            paramObjects[0] = label; // First param is always label
+
+            // Assign the other params from the second one
+            for (int i = 1; i < consParamTypes.length; i++) {
+                Class<?> c = consParamTypes[i];
+                // Can be RegisterName, or Integer, or String(for Jnz target label)
+                if (c.getName().equals("sml.RegisterName")) {
+                    paramObjects[i] = Registers.Register.valueOf(scan());
+                } else if (c.getName().equals("java.lang.Integer")) {
+                    paramObjects[i] = Integer.parseInt(scan());
+                } else if (c.getName().equals("java.lang.String")) {
+                    paramObjects[i] = scan();
+                }
             }
-
-            // [Done] TODO: add code for all other types of instructions
-            case MovInstruction.OP_CODE -> {
-                String r = scan();
-                int i = Integer.parseInt(scan());
-                return new MovInstruction(label, Register.valueOf(r), i);
-            }
-
-            case SubInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new SubInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-
-            case MulInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new MulInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-
-            case DivInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new DivInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-
-            case OutInstruction.OP_CODE -> {
-                String r = scan();
-                return new OutInstruction(label, Register.valueOf(r));
-            }
-
-            case JnzInstruction.OP_CODE -> {
-                String r = scan();
-                String L = scan();
-                return new JnzInstruction(label, Register.valueOf(r), L);
-            }
-
-            // TODO: Then, replace the switch by using the Reflection API
-
-            // TODO: Next, use dependency injection to allow this machine class
-            //       to work with different sets of opcodes (different CPUs)
-
-            default -> {
-                System.out.println("Unknown instruction: " + opcode);
-            }
+            return (Instruction) constructor.newInstance(paramObjects);
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException ignore) {
         }
         return null;
     }
