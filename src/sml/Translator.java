@@ -11,11 +11,11 @@ import java.util.Scanner;
 import static sml.Registers.Register;
 
 /**
- * This class ....
+ * This class reads a sml file adding each line instruction into the machine's program.
  * <p>
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  *
- * @author ...
+ * @author Haomeng Wang
  */
 public final class Translator {
 
@@ -125,10 +125,10 @@ public final class Translator {
     private String getLabel() {
         String word = scan();
         if (word.endsWith(":"))
-            return word.substring(0, word.length() - 1);
+            return word.substring(0, word.length() - 1); // Has label
 
         // undo scanning the word
-        line = word + " " + line;
+        line = word + " " + line; // Has no label, line recovered to be the trimmed original line
         return null;
     }
 
@@ -139,13 +139,14 @@ public final class Translator {
     private String scan() {
         line = line.trim();
 
+        // If there is a label, then line need to be changed into substring
+        // If no label, line return with no change
         for (int i = 0; i < line.length(); i++)
             if (Character.isWhitespace(line.charAt(i))) {
-                String word = line.substring(0, i);
-                line = line.substring(i);
+                String word = line.substring(0, i); // case if there is label
+                line = line.substring(i);  // opcode
                 return word;
             }
-
-        return line;
+        return line; // case if no label
     }
 }
