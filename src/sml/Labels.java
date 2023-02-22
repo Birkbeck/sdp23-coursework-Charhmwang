@@ -31,10 +31,15 @@ public final class Labels {
 		Objects.requireNonNull(label);
 		// [Done] TODO: Add a check that there are no label duplicates.
 		// Check if this label is already existed, throw a runtime exception
-			if (labels.containsKey(label))
-				throw new RuntimeException("Oops, there are labels duplicates!");
-			else
-				labels.put(label, address);
+			try {
+				if (labels.containsKey(label))
+					throw new RuntimeException();
+				else
+					labels.put(label, address);
+			} catch (RuntimeException e) {
+				System.out.println("Oops, there are labels duplicates!");
+				System.exit(1);
+			}
 	}
 
 	/**
@@ -49,8 +54,13 @@ public final class Labels {
 		//       Add code to deal with non-existent labels.
 		// NullPointerException is thrown when there is a parameter label found
 		// in a jnz instruction, but not found as a key in the labels map.
-		if (!labels.containsKey(label))
-			throw new NullPointerException("Non-exited label!");
+		try {
+			if (!labels.containsKey(label))
+				throw new NullPointerException();
+		} catch (NullPointerException e){
+			System.out.println("Non-exited label!");
+			System.exit(1);
+		}
 		return labels.get(label);
 	}
 
