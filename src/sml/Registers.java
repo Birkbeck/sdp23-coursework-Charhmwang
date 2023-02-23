@@ -60,7 +60,7 @@ public final class Registers {
         return registers.get((Register)register);
     }
 
-    //  TODO: use pattern matching for instanceof
+    // [Done] TODO: use pattern matching for instanceof
     // https://docs.oracle.com/en/java/javase/14/language/pattern-matching-instanceof-operator.html
     /**
      * Compares to another Registers object whether equal based on the hashmap registers contents.
@@ -70,8 +70,7 @@ public final class Registers {
      */
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Registers) {
-            Registers other = (Registers) o;
+        if (o instanceof Registers other) {
             return registers.equals(other.registers);
         }
         return false;
