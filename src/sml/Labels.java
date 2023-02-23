@@ -58,7 +58,7 @@ public final class Labels {
 			if (!labels.containsKey(label))
 				throw new NullPointerException();
 		} catch (NullPointerException e){
-			System.out.println("Non-exited label!");
+			System.out.println("Non-existed label!");
 			System.exit(1);
 		}
 		return labels.get(label);
