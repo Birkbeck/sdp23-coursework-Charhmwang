@@ -17,8 +17,10 @@ public class Main {
 			Translator t = Translator.getInstance(args[0]);
 
 			Registers r = Registers.getInstance();
+			Labels l = Labels.getInstance();
 			Machine m = Machine.getInstance();
 			m.setRegisters(r);
+			m.setLabels(l);
 
 			t.readAndTranslate(m.getLabels(), m.getProgram());
 

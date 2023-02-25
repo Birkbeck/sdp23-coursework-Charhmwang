@@ -15,7 +15,7 @@ import static sml.Instruction.NORMAL_PROGRAM_COUNTER_UPDATE;
  */
 public final class Machine {
 
-	private final Labels labels = Labels.getInstance();
+	private Labels labels;
 
 	private final List<Instruction> program = new ArrayList<>();
 
@@ -34,6 +34,7 @@ public final class Machine {
 	}
 
 	public void setRegisters(Registers registers) { this.registers = registers; }
+	public void setLabels(Labels labels) { this.labels = labels; }
 
 
 	/**
