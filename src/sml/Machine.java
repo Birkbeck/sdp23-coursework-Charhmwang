@@ -19,7 +19,7 @@ public final class Machine {
 
 	private final List<Instruction> program = new ArrayList<>();
 
-	private final Registers registers = Registers.getInstance();
+	private Registers registers;
 
 	// The program counter; it contains the index (in program)
 	// of the next instruction to be executed.
@@ -32,6 +32,8 @@ public final class Machine {
 		}
 		return machineInstance;
 	}
+
+	public void setRegisters(Registers registers) { this.registers = registers; }
 
 
 	/**

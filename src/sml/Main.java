@@ -1,7 +1,6 @@
 package sml;
 
 import java.io.IOException;
-
 public class Main {
 	/**
 	 * Initialises the system and executes the program.
@@ -16,7 +15,11 @@ public class Main {
 
 		try {
 			Translator t = Translator.getInstance(args[0]);
+
+			Registers r = Registers.getInstance();
 			Machine m = Machine.getInstance();
+			m.setRegisters(r);
+
 			t.readAndTranslate(m.getLabels(), m.getProgram());
 
 			System.out.println("Here is the program; it has " + m.getProgram().size() + " instructions.");
