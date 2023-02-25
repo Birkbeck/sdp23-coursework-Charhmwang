@@ -33,8 +33,7 @@ public final class Registers {
      private Registers() { clear(); }
 
     /**
-     * Initialize a new Registers instance.
-     * This type instance can be created once only, then always the same reference instance object
+     * Registers instance, set as null initially.
      * private to be hidden from outside the Registers class
      */
      private static Registers registersInstance;
@@ -42,6 +41,10 @@ public final class Registers {
 
     /**
      * For other classes getting the Registers instance.
+     * If the instance has never been created, initiate one then return.
+     * If the instance has already been initiated, then return the old one.
+     * Synchronized ensures thread safe while this program is operated by multiple CPU.
+     * Ensures the Registers instance can be created once only in the program.
      *
      * @return the only one Registers instance
      */
