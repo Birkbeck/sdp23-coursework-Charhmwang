@@ -18,7 +18,7 @@ public class DivInstructionTest {
 
     @BeforeEach
     void setUp() {
-        machine = new Machine(new Registers());
+        machine = Machine.getInstance();
         registers = machine.getRegisters();
         //...
     }

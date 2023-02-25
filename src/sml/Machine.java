@@ -11,23 +11,28 @@ import static sml.Instruction.NORMAL_PROGRAM_COUNTER_UPDATE;
  * Represents the machine, the context in which programs run.
  * <p>
  * An instance contains 32 registers and methods to access and change them.
- *
+ * Singleton Class.
  */
 public final class Machine {
 
-	private final Labels labels = new Labels();
+	private final Labels labels = Labels.getInstance();
 
 	private final List<Instruction> program = new ArrayList<>();
 
-	private final Registers registers;
+	private final Registers registers = Registers.getInstance();
 
 	// The program counter; it contains the index (in program)
 	// of the next instruction to be executed.
 	private int programCounter = 0;
-
-	public Machine(Registers registers) {
-		this.registers = registers;
+	private Machine() {}
+	private static Machine machineInstance;
+	public synchronized static Machine getInstance() {
+		if (machineInstance == null) {
+			machineInstance = new Machine();
+		}
+		return machineInstance;
 	}
+
 
 	/**
 	 * Execute the program in program, beginning at instruction 0.

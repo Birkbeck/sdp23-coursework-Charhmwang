@@ -8,12 +8,8 @@ import sml.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static sml.Registers.Register.EAX;
 
 public class MethodsTest {
     private Machine machine;
@@ -24,7 +20,7 @@ public class MethodsTest {
 
     @BeforeEach
     void setUp() {
-        machine = new Machine(new Registers());
+        machine = Machine.getInstance();
         registers = machine.getRegisters();
         System.setOut(new PrintStream(outputStream));
     }
@@ -38,8 +34,8 @@ public class MethodsTest {
 
     @Test
     void executeLabelsToString() throws IOException {
-        Translator t = new Translator("./src/test2.sml");
-        Machine m = new Machine(new Registers());
+        Translator t = Translator.getInstance("./src/test2.sml");
+        Machine m = Machine.getInstance();
         t.readAndTranslate(m.getLabels(), m.getProgram());
         System.out.print(m.getLabels());
         String actual = outputStream.toString();
@@ -50,11 +46,11 @@ public class MethodsTest {
 
     @Test
     void executeLabels_equals() throws IOException {
-        Translator t = new Translator("./src/test2.sml");
-        Machine m = new Machine(new Registers());
+        Translator t = Translator.getInstance("./src/test2.sml");
+        Machine m = Machine.getInstance();
         t.readAndTranslate(m.getLabels(), m.getProgram());
 
-        Labels testLabels = new Labels();
+        Labels testLabels = Labels.getInstance();
         testLabels.addLabel("f1", 0);
         testLabels.addLabel("f2", 2);
         testLabels.addLabel("f3", 3);
@@ -64,4 +60,5 @@ public class MethodsTest {
 
         assertEquals(expected, actual);
     }
+
 }

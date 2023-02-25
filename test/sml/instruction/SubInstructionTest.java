@@ -17,7 +17,7 @@ public class SubInstructionTest {
 
     @BeforeEach
     void setUp() {
-        machine = new Machine(new Registers());
+        machine = Machine.getInstance();
         registers = machine.getRegisters();
         //...
     }

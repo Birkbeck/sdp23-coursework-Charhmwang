@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Represents registers collection in a machine.
  * There are 8 registers in the machine, and each one stores a mutable integer value.
+ * Singleton Class.
  *
  * @author Haomeng Wang
  */
@@ -18,6 +19,7 @@ public final class Registers {
      * */
     private final Map<Register, Integer> registers = new HashMap<>();
 
+
     /** The enum collection implements interface RegisterName in form of string, composed of 8 register names.
      */
     public enum Register implements RegisterName {
@@ -26,10 +28,30 @@ public final class Registers {
 
     /**
      * Constructor: set contents of registers in the machine to original status
+     * Private constructor ensures instance can only be initiated inside the class.
      */
-    public Registers() {
-        clear(); // the class is final
-    }
+     private Registers() { clear(); }
+
+    /**
+     * Initialize a new Registers instance.
+     * This type instance can be created once only, then always the same reference instance object
+     * private to be hidden from outside the Registers class
+     */
+     private static Registers registersInstance;
+
+
+    /**
+     * For other classes getting the Registers instance.
+     *
+     * @return the only one Registers instance
+     */
+     public synchronized static Registers getInstance() {
+         if (registersInstance == null) {
+             registersInstance = new Registers();
+         }
+         return registersInstance;
+     }
+
 
     /**
      * Add each register enum name as key and zero as value into the map registers.

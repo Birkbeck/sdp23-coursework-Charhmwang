@@ -8,6 +8,7 @@ import sml.Instruction;
 import sml.Machine;
 import sml.Registers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static sml.Registers.Register.*;
 
 class AddInstructionTest {
@@ -16,7 +17,7 @@ class AddInstructionTest {
 
   @BeforeEach
   void setUp() {
-    machine = new Machine(new Registers());
+    machine =  Machine.getInstance();
     registers = machine.getRegisters();
     //...
   }
@@ -43,5 +44,16 @@ class AddInstructionTest {
     Instruction instruction = new AddInstruction(null, EAX, EBX);
     instruction.execute(machine);
     Assertions.assertEquals(1, machine.getRegisters().get(EAX));
+  }
+
+  @Test
+  void test_equals() {
+
+    AddInstruction test1 = new AddInstruction("f1", EAX, EBX);
+    AddInstruction test2 = new AddInstruction("f1", EAX, EBX);
+
+    Boolean expected = true;
+    assertEquals(expected, test1.equals(test2));
+
   }
 }

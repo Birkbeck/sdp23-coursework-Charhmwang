@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 /**
  * This class reads a sml file adding each line instruction into the machine's program.
+ * Singleton class.
  * <p>
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  *
@@ -24,9 +25,16 @@ public final class Translator {
     // line contains the characters in the current line that's not been processed yet
     private String line = "";
 
-    public Translator(String fileName) {
-        this.fileName =  fileName;
-    }
+    private Translator(String fileName) { this.fileName = fileName; }
+
+    private static Translator translatorInstance = null;
+
+    public synchronized static Translator getInstance(String fileName) {
+        if (translatorInstance == null) {
+            translatorInstance = new Translator(fileName);
+        }
+        return translatorInstance; }
+
 
     // translate the small program in the file into lab (the labels) and
     // prog (the program)

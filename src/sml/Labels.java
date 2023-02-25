@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 /**
  * Represents labels of the whole set of labeled instructions in a program
  * and the corresponding addresses.
+ * Singleton class.
  *
  * @author Haomeng Wang
  */
@@ -20,6 +21,26 @@ public final class Labels {
 	 * Each label which is not null will be set into the map as key with value of integer.
 	 * */
 	private final Map<String, Integer> labels = new HashMap<>();
+
+	/**
+	 * Initialize a new Labels instance.
+	 * This type instance can be created once only, then always the same reference instance object
+	 * private to be hidden from outside the Registers class
+	 */
+	private static Labels labelsInstance;
+
+	/**
+	 * Private constructor ensures instance can only be initiated inside the class.
+	 */
+	private Labels() {}
+
+	public synchronized static Labels getInstance() {
+		if (labelsInstance == null) {
+			labelsInstance = new Labels();
+		}
+
+		return labelsInstance;
+	}
 
 	/**
 	 * Adds a label with the associated address to the map.
