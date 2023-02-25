@@ -1,6 +1,9 @@
 package sml;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 	/**
 	 * Initialises the system and executes the program.
@@ -18,9 +21,11 @@ public class Main {
 
 			Registers r = Registers.getInstance();
 			Labels l = Labels.getInstance();
+			List<Instruction> p = new ArrayList<>();
 			Machine m = Machine.getInstance();
 			m.setRegisters(r);
 			m.setLabels(l);
+			m.setProgram(p);
 
 			t.readAndTranslate(m.getLabels(), m.getProgram());
 

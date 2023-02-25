@@ -17,7 +17,7 @@ public final class Machine {
 
 	private Labels labels;
 
-	private final List<Instruction> program = new ArrayList<>();
+	private List<Instruction> program;
 
 	private Registers registers;
 
@@ -35,6 +35,7 @@ public final class Machine {
 
 	public void setRegisters(Registers registers) { this.registers = registers; }
 	public void setLabels(Labels labels) { this.labels = labels; }
+	public void setProgram(List<Instruction> program) { this.program = program; }
 
 
 	/**
