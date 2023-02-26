@@ -1,8 +1,11 @@
 package sml;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Properties;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.PropertiesBeanDefinitionReader;
 
 public class Main {
 	/**
@@ -17,15 +20,14 @@ public class Main {
 		}
 
 		try {
+			// get the bean factory
+			var factory = getBeanFactory();
 			Translator t = Translator.getInstance(args[0]);
+			// MessageRenderer mr = (MessageRenderer) factory.getBean("renderer");
 
-			Registers r = Registers.getInstance();
-			Labels l = Labels.getInstance();
-			List<Instruction> p = new ArrayList<>();
-			Machine m = Machine.getInstance();
-			m.setRegisters(r);
-			m.setLabels(l);
-			m.setProgram(p);
+			Registers r = (Registers) factory.getBean("Registers");
+			Labels l = (Labels) factory.getBean("Labels");
+			Machine m = (Machine) factory.getBean("Machine");
 
 			t.readAndTranslate(m.getLabels(), m.getProgram());
 
@@ -41,5 +43,21 @@ public class Main {
 		catch (IOException e) {
 			System.out.println("Error reading the program from " + args[0]);
 		}
+	}
+
+	private static BeanFactory getBeanFactory() throws IOException {
+		// get the bean factory
+		var factory = new DefaultListableBeanFactory();
+		// create a definition reader
+		var pdr = new PropertiesBeanDefinitionReader(factory);
+
+		// load the configuration options
+		var props = new Properties();
+		try (var fis = Main.class.getResourceAsStream("/beans")) {
+			props.load(fis);
+		}
+
+		pdr.registerBeanDefinitions(props);
+		return factory;
 	}
 }

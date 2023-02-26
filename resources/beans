@@ -1,0 +1,6 @@
+Machine.(class)=sml.Machine
+Registers.(class)=sml.Registers
+Labels.(class)=sml.Labels
+
+Machine.registers(ref)=Registers
+Machine.labels(ref)=Labels

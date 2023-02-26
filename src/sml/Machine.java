@@ -12,12 +12,14 @@ import static sml.Instruction.NORMAL_PROGRAM_COUNTER_UPDATE;
  * <p>
  * An instance contains 32 registers and methods to access and change them.
  * Singleton Class.
+ *
+ * @author Haomeng Wang
  */
 public final class Machine {
 
 	private Labels labels;
 
-	private List<Instruction> program;
+	private final List<Instruction> program = new ArrayList<>();
 
 	private Registers registers;
 
@@ -35,7 +37,6 @@ public final class Machine {
 
 	public void setRegisters(Registers registers) { this.registers = registers; }
 	public void setLabels(Labels labels) { this.labels = labels; }
-	public void setProgram(List<Instruction> program) { this.program = program; }
 
 
 	/**
