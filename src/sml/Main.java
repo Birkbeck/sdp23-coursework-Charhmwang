@@ -23,9 +23,6 @@ public class Main {
 			// get the bean factory
 			var factory = getBeanFactory();
 			Translator t = Translator.getInstance(args[0]);
-
-			Registers r = (Registers) factory.getBean("Registers");
-			Labels l = (Labels) factory.getBean("Labels");
 			Machine m = (Machine) factory.getBean("Machine");
 
 			// No need to set the Machine properties
