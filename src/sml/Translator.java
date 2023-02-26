@@ -88,7 +88,7 @@ public final class Translator {
 
 
     // [Done] TODO: Then, replace the switch by using the Reflection API
-    // TODO: Next, use dependency injection to allow this machine class to work with different sets of opcodes (different CPUs)
+    // [Done] TODO: Next, use dependency injection to allow this machine class to work with different sets of opcodes (different CPUs)
     /**
      * Creates an instance of the Instruction subclass described in param className.
      * This class should exist in the beans.properties file.
