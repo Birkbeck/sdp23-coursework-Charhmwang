@@ -23,11 +23,16 @@ public class Main {
 			// get the bean factory
 			var factory = getBeanFactory();
 			Translator t = Translator.getInstance(args[0]);
-			// MessageRenderer mr = (MessageRenderer) factory.getBean("renderer");
 
 			Registers r = (Registers) factory.getBean("Registers");
 			Labels l = (Labels) factory.getBean("Labels");
 			Machine m = (Machine) factory.getBean("Machine");
+
+			// No need to set the Machine properties
+			// - Spring does that instead based on:
+			// Machine.registers(ref)=Registers
+			// Machine.labels(ref)=Labels
+			// in the beans file in the folder resources.
 
 			t.readAndTranslate(m.getLabels(), m.getProgram());
 
