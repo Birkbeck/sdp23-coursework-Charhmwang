@@ -18,8 +18,8 @@ class AddInstructionTest {
   @BeforeEach
   void setUp() {
     machine =  Machine.getInstance();
-    registers = machine.getRegisters();
-    //...
+    registers = Registers.getInstance();
+    machine.setRegisters(registers);
   }
 
   @AfterEach

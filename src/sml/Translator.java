@@ -106,7 +106,7 @@ public final class Translator {
 
         // Get all the subclasses and classpath from a properties file in directory resources
         Properties props = new Properties();
-        props.load( new FileReader("../resources/beans.properties") );
+        props.load( new FileReader("beans.properties") );
         String classPath = props.getProperty(insClassName);
         Class<?> cls = Class.forName(classPath);
         // Each Instruction subclass is designed having only one constructor

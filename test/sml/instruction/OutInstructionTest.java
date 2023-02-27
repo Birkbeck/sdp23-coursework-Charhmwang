@@ -22,10 +22,10 @@ public class OutInstructionTest {
 
     @BeforeEach
     void setUp() {
-        machine = Machine.getInstance();
-        registers = machine.getRegisters();
+        machine =  Machine.getInstance();
+        registers = Registers.getInstance();
+        machine.setRegisters(registers);
         System.setOut(new PrintStream(outputStream));
-        //...
     }
 
     @AfterEach

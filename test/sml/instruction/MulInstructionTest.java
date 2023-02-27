@@ -17,9 +17,9 @@ public class MulInstructionTest {
 
     @BeforeEach
     void setUp() {
-        machine = Machine.getInstance();
-        registers = machine.getRegisters();
-        //...
+        machine =  Machine.getInstance();
+        registers = Registers.getInstance();
+        machine.setRegisters(registers);
     }
 
     @AfterEach

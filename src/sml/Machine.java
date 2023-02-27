@@ -50,8 +50,8 @@ public final class Machine {
 			Instruction ins = program.get(programCounter);
 			int programCounterUpdate = ins.execute(this);
 			programCounter = (programCounterUpdate == NORMAL_PROGRAM_COUNTER_UPDATE)
-				? programCounter + 1
-				: programCounterUpdate;
+					? programCounter + 1
+					: programCounterUpdate;
 		}
 	}
 

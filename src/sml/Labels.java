@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 /**
  * Represents labels of the whole set of labeled instructions in a program
  * and the corresponding addresses.
- * Singleton class.
  *
  * @author Haomeng Wang
  */
@@ -23,34 +22,6 @@ public final class Labels {
 	private final Map<String, Integer> labels = new HashMap<>();
 
 	/**
-	 * Labels instance, set as null initially.
-	 * private to be hidden from outside the Registers class
-	 */
-	private static Labels labelsInstance;
-
-	/**
-	 * Private constructor ensures instance can only be initiated inside the class.
-	 */
-	private Labels() {}
-
-	/**
-	 * For other classes getting the Labels instance.
-	 * If the instance has never been created, initiate one then return.
-	 * If the instance has already been initiated, then return the old one.
-	 * Synchronized ensures thread safe while this program is operated by multiple CPU.
-	 * Ensures the Labels instance can be created once only in the program.
-	 *
-	 * @return the only one Labels instance
-	 */
-	public synchronized static Labels getInstance() {
-		if (labelsInstance == null) {
-			labelsInstance = new Labels();
-		}
-
-		return labelsInstance;
-	}
-
-	/**
 	 * Adds a label with the associated address to the map.
 	 *
 	 * @param label the label
@@ -60,15 +31,10 @@ public final class Labels {
 		Objects.requireNonNull(label);
 		// [Done] TODO: Add a check that there are no label duplicates.
 		// Check if this label is already existed, throw a runtime exception
-			try {
-				if (labels.containsKey(label))
-					throw new RuntimeException();
-				else
-					labels.put(label, address);
-			} catch (RuntimeException e) {
-				System.out.println("Oops, there are labels duplicates!");
-				System.exit(1);
-			}
+		if (labels.containsKey(label))
+			throw new RuntimeException("Oops, there are labels duplicates!");
+		else
+			labels.put(label, address);
 	}
 
 	/**
@@ -83,13 +49,8 @@ public final class Labels {
 		//       Add code to deal with non-existent labels.
 		// NullPointerException is thrown when there is a parameter label found
 		// in a jnz instruction, but not found as a key in the labels map.
-		try {
-			if (!labels.containsKey(label))
-				throw new NullPointerException();
-		} catch (NullPointerException e){
-			System.out.println("Non-existed label!");
-			System.exit(1);
-		}
+		if (!labels.containsKey(label))
+			throw new NullPointerException("Non-exited label!");
 		return labels.get(label);
 	}
 
