@@ -31,11 +31,17 @@ public final class Labels {
 		Objects.requireNonNull(label);
 		// [Done] TODO: Add a check that there are no label duplicates.
 		// Check if this label is already existed, throw a runtime exception
-		if (labels.containsKey(label))
-			throw new RuntimeException("Oops, there are labels duplicates!");
-		else
-			labels.put(label, address);
+		try {
+			if (labels.containsKey(label))
+				throw new RuntimeException();
+			else
+				labels.put(label, address);
+		} catch (RuntimeException e) {
+			System.out.println("Label " + label + " has duplicates in program!" );
+			System.exit(1);
+		}
 	}
+
 
 	/**
 	 * Returns the address associated with the label.
@@ -49,25 +55,16 @@ public final class Labels {
 		//       Add code to deal with non-existent labels.
 		// NullPointerException is thrown when there is a parameter label found
 		// in a jnz instruction, but not found as a key in the labels map.
-		if (!labels.containsKey(label))
-			throw new NullPointerException("Non-exited label!");
+		try {
+			if (!labels.containsKey(label))
+				throw new NullPointerException();
+		} catch (NullPointerException e){
+			System.out.println("Label " + label + " does not exist in this program!");
+			System.exit(1);
+		}
 		return labels.get(label);
 	}
 
-	/**
-	 * representation of this instance,
-	 * in the form "[label -> address, label -> address, ..., label -> address]"
-	 *
-	 * @return the string representation of the labels map
-	 */
-	@Override
-	public String toString() {
-		// [Done] TODO: Implement the method using the Stream API (see also class Registers).
-		return labels.entrySet().stream()
-				.sorted(Map.Entry.comparingByValue())
-				.map(e -> e.getKey() + " -> " + e.getValue())
-				.collect(Collectors.joining(", ", "[", "]")) ;
-	}
 
 	// [Done] TODO: Implement equals and hashCode (needed in class Machine).
 	/**
@@ -84,6 +81,23 @@ public final class Labels {
 		return false;
 	}
 
+
+	/**
+	 * representation of this instance,
+	 * in the form "[label -> address, label -> address, ..., label -> address]"
+	 *
+	 * @return the string representation of the labels map
+	 */
+	@Override
+	public String toString() {
+		// [Done] TODO: Implement the method using the Stream API (see also class Registers).
+		return labels.entrySet().stream()
+				.sorted(Map.Entry.comparingByValue())
+				.map(e -> e.getKey() + " -> " + e.getValue())
+				.collect(Collectors.joining(", ", "[", "]")) ;
+	}
+
+
 	/**
 	 * Returns an integer hash value of the Labels object.
 	 * For the use of comparing objects reference.
@@ -92,6 +106,7 @@ public final class Labels {
 	 */
 	@Override
 	public int hashCode() { return Objects.hash(labels); }
+
 
 	/**
 	 * Removes the labels

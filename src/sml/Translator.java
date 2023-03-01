@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+
+import static java.lang.System.exit;
 
 /**
  * This class reads a sml file adding each line instruction into the machine's program.
@@ -55,10 +59,12 @@ public final class Translator {
                     if (label != null)
                         labels.addLabel(label, program.size());
                     program.add(instruction);
+                } else {
+                    throw new RuntimeException();
                 }
             }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (ClassNotFoundException | RuntimeException e) {
+            exit(1);
         }
     }
 
@@ -80,8 +86,13 @@ public final class Translator {
                 + opcode.substring(1) + "Instruction";
 
         Instruction ins = builder(label, insClassName);
-        if (ins == null)
-            System.out.println("Unknown instruction: " + opcode);
+        try {
+            if (ins == null) {
+                System.out.println("Unknown instruction: " + opcode);
+                throw new RuntimeException();
+            }
+        } catch(RuntimeException ignore) {
+        }
 
         return ins;
     }
@@ -108,12 +119,13 @@ public final class Translator {
         Properties props = new Properties();
         props.load( new FileReader("beans.properties") );
         String classPath = props.getProperty(insClassName);
-        Class<?> cls = Class.forName(classPath);
-        // Each Instruction subclass is designed having only one constructor
-        Constructor<?> constructor = cls.getConstructors()[0];
-        int paramsNum = constructor.getParameterCount();
 
         try {
+            Class<?> cls = Class.forName(classPath);
+            // Each Instruction subclass is designed having only one constructor
+            Constructor<?> constructor = cls.getConstructors()[0];
+            int paramsNum = constructor.getParameterCount();
+
             Object[] paramObjects = new Object[paramsNum];
             // get the constructor parameters
             // a collection of params class - of the constructor
@@ -133,7 +145,7 @@ public final class Translator {
                 }
             }
             return (Instruction) constructor.newInstance(paramObjects);
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException ignore) {
+        } catch (NullPointerException | InvocationTargetException | InstantiationException | IllegalAccessException ignore) {
         }
         return null;
     }
